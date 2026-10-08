@@ -388,11 +388,11 @@ int classifyAdd3(int x, int y, int z) {
  *   Rating: 7
  */
 unsigned floatScaleThreeHalves(unsigned uf) {
-  unsigned sign = uf & 0x80000000;
-  unsigned exp = (uf >> 23 ) & 0xff;
-  unsigned frac = uf & 0x7fffff;
+  int sign = uf & 0x80000000;
+  int exp = (uf >> 23 ) & 0xff;
+  int frac = uf & 0x7fffff;
   
-  unsigned new_frac;
+  int new_frac;
   if(exp == 0xff){
     return uf;
   }
@@ -400,15 +400,15 @@ unsigned floatScaleThreeHalves(unsigned uf) {
     return uf;
  }
  else{
-  unsigned mantisa = (1 << 23) | frac;
+  int mantisa = (1 << 23) | frac;
   mantisa = mantisa * 3 ;
   mantisa = mantisa >> 1;  
-  unsigned new_exp = exp;
+  int new_exp = exp;
   if(mantisa >= (1 << 23)){
-    new_frac = mantisa & 0x7fffff;
+    new_frac = mantisa & ((1 << 23) - 1);
     new_exp += 1;
      }else{
-    new_frac = mantisa & 0x7fffff;
+    new_frac = mantisa & ((1 << 23) - 1);
   }
   if (new_exp >= 0xff){
     return sign | (0xff << 23);
@@ -429,9 +429,9 @@ unsigned floatScaleThreeHalves(unsigned uf) {
  *   Rating: 10
  */
 unsigned floatRoundEven(unsigned uf) {
-  unsigned sign = uf & 0x80000000;
-  unsigned exp = (uf >> 23 ) & 0xff;
-  unsigned frac = uf & 0x7fffff;
+  int sign = uf & 0x80000000;
+  int exp = (uf >> 23 ) & 0xff;
+  int frac = uf & 0x7fffff;
   if (exp == 0xff){
     return uf;
   }
@@ -477,7 +477,7 @@ unsigned floatRoundEven(unsigned uf) {
  *   Rating: 10
  */
 unsigned float_i2f(int x) {
-  unsigned sign = x >> 31;
+  int sign = x >> 31;
   
   return 17;
 }
